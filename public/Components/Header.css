@@ -1,0 +1,77 @@
+.Header{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	height: 80px;
+	width: 100%;
+	position: fixed;
+	top: 0px;
+  background: #D84545;
+}
+
+.Left{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-left: 50px;
+}
+
+.Logo{
+	width: 30px;
+	height: 30px;
+}
+
+.LogoText{
+	font-size: 12px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  color: #FFFFFF;
+}
+
+.Right{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+.input-group{
+	flex-wrap: nowrap !important;
+}
+
+.SearchIcon{
+	position: relative;
+	top:2px;
+	right: 10px;
+	color: white !important;
+	font-size: 18px !important;
+}
+.SearchIcon:hover{
+	color:black !important;
+}
+
+.Link{
+	display: flex;
+	flex-direction: row;
+}
+
+a{
+  text-decoration: none !important;
+  margin-right: 20px !important;
+  color: #FFF !important;
+}
+a:hover{
+  color:#000 !important;
+}
+
+@media only screen and (max-width: 600px){
+.Left{
+	margin-left: 5px !important;
+	}
+}
+@media only screen and (max-width: 435px){
+	.Search{
+		width: 110px !important;
+	}
+}
