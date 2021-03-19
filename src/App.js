@@ -23,28 +23,19 @@ function App(props) {
 
   const [select,setSelect]=useState([])
 
-  // const [search,setSearch]=useState('')
-  // .filter((getNews)=>{
-  //   if(location.state===undefined){
-  //     return getNews
-  //   }
-  //   else if(getNews.title.toLowerCase().includes(location.state.toLowerCase())){
-  //     return getNews
-  //   }
-  // })
     // console.log(props);
   useEffect(()=>{
-
-    auth.onAuthStateChanged(function(user) {
-      if (user) {
-        // User is signed in.
-        setUser(user);
-      } else {
-        // No user is signed in.
-        setUser('');
-      }
-    });
-
+///check user is sign in or not
+    // auth.onAuthStateChanged(function(user) {
+    //   if (user) {
+    //     // User is signed in.
+    //     setUser(user);
+    //   } else {
+    //     // No user is signed in.
+    //     setUser('');
+    //   }
+    // });
+///end of check user sign in or not
     db.collection("News").orderBy('id','desc').onSnapshot(snapshot=>{
      setAddNews(snapshot.docs.map(doc=>({
         id:doc.id,
@@ -73,7 +64,8 @@ function App(props) {
       <div className="App">
       <Header id="header"/>
       <Switch>
-      {user?(
+      {
+        // user?(
         <>
         <Redirect from='/' to='/list'/>
         <Route path="/add">
@@ -107,13 +99,16 @@ function App(props) {
     }
         </Route>
         </>
+      /*
       ):(
         <Route path="/">
         <Header/>
         <div style={{height:'100px'}}>
         </div>
           <Login/>
-        </Route>)}
+        </Route>)
+        */}
+      }
       </Switch>
       <Footer/>
       </div>
