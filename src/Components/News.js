@@ -13,6 +13,29 @@ import AWS from 'aws-sdk';
 
 function News(props){
   const location=useLocation();
+  console.log('loc',location);
+
+  let getTitle=props.showTitle;
+  getTitle=getTitle.toLowerCase();
+
+  let getNews=props.showNews;
+  getNews=getNews.toLowerCase();
+
+
+  let search2;
+  if((location.state==undefined)||(location.state=="")){
+  search2="nai"
+  }
+  else{
+   search2=location.state;
+   search2=search2.toLowerCase();
+ }
+  let SearchTitle=getTitle.match(search2);
+  let SearchNews=getNews.match(search2);
+  // console.log(props);
+  console.log('eee',search2);
+  console.log('search',SearchTitle);
+  console.log('neew',SearchNews);
 
   const [editNews,setEditNews]=useState({
     id:props.id,
@@ -91,12 +114,12 @@ function News(props){
       }
     });
   }
-
-  const Edit=()=>{
-    history.push({pathname: '/edit', search: '?query=abc', state: editNews});
-  }
+  // const Edit=()=>{
+  //   history.push({pathname: '/edit', search: '?query=abc', state: editNews});
+  // <div className="Container" style={((location.state===props.showTitle)||(location.state==undefined)||(location.state==""))?{display:'flex'}:{display:'none'}}>
+  // }
   return(
-      <div className="Container">
+      <div className="Container" style={((SearchTitle)||(SearchNews)||(search2=='nai'))?{display:'flex'}:{display:'none'}}>
         <div>
             <div className="Image">
                 <img className="NewsImage" src={props.imageUrl}/>

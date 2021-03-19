@@ -40,7 +40,7 @@ function Edit(props) {
   console.log(selectCategories);
   const d = new Date();
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  const time = d.getDate() + ' ' + months[d.getMonth()] + ', ' + d.getFullYear() + ' at ' + d.getHours() + ':' + d.getMinutes() + ' ' + ((d.getHours() > 11) ? 'pm' : 'am');
+  const time = d.getDate() + ' ' + months[d.getMonth()] + ', ' + d.getFullYear() + ' at ' + d.getHours() + ':' + d.getMinutes();
 
   const [editNews, setEditNews] = useState({
     id: news.id,

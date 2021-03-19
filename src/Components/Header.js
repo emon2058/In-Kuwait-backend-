@@ -5,7 +5,23 @@ import Logo from '../Image/logo.PNG';
 import AddIcon from '@material-ui/icons/Add';
 import ReorderIcon from '@material-ui/icons/Reorder';
 
-function Header(props){
+function Header(){
+  const history=useHistory();
+  const [search,setSearch]=useState('');
+
+  const EventChange=(event)=>{
+    setSearch(event.target.value,
+      history.push({pathname: '/list', search: '?'+event.target.value, state:event.target.value})
+    );
+    // history.push({pathname: '/list', search: '?'+search, state:search});
+  }
+
+  console.log("ses" +search);
+
+  const Search=()=>{
+    history.push({pathname: '/list', search: '?'+search, state:search});
+  }
+
   return(
     <div className="Header">
       <Link to="/list">
@@ -22,14 +38,26 @@ function Header(props){
       </div>}
       {/* <div className="Link">*/}
       <div className="Right">
-        <div>
+        <div>{/*
+          <label htmlFor="header-search">
+          <span className="visually-hidden">Search blog posts</span>
+          </label>
+          <input
+          type="text"
+          id="header-search"
+          placeholder="Search blog posts"
+          name="s"
+          />
+          <button type="submit">Search</button>
+          */}
+
           <div className="input-group">
             <div className="form-outline">
-              <input type="search" id="search" className="form-control Search" placeholder="Search" />
+              <input type="search" id="search" className="form-control Search" placeholder="Search" value={search} onChange={EventChange}/>
             </div>
-            <i className="fas fa-search btn SearchIcon"></i>
-            </div>
+            <i className="fas fa-search btn SearchIcon" onClick={Search}></i>
           </div>
+        </div>
         <div>
           <Link to="/list">
             <ReorderIcon/>

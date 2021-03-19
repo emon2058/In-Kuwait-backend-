@@ -23,6 +23,16 @@ function App(props) {
 
   const [select,setSelect]=useState([])
 
+  // const [search,setSearch]=useState('')
+  // .filter((getNews)=>{
+  //   if(location.state===undefined){
+  //     return getNews
+  //   }
+  //   else if(getNews.title.toLowerCase().includes(location.state.toLowerCase())){
+  //     return getNews
+  //   }
+  // })
+    // console.log(props);
   useEffect(()=>{
 
     auth.onAuthStateChanged(function(user) {
@@ -53,8 +63,11 @@ function App(props) {
       return [...previousItems,createNews];
     })
   }
-  console.log('hh');
-  console.log(addNews);
+
+  console.log('locations',location);
+  console.log( 'searcho',history);
+
+  console.log('add news',addNews);
   return (
     <Router>
       <div className="App">
@@ -87,6 +100,7 @@ function App(props) {
           showNews={getNews.news}
           showCategory={getNews.category}
           showTimeStamp={getNews.timeStamp}
+          url={location.search}
           />
         }
       )

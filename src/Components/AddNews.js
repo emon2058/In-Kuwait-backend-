@@ -11,22 +11,23 @@ import S3 from './DigitalOcean';
 import Config from './config'
 import firebase from 'firebase';
 
-function AddNews(){
+function AddNews(props){
+  console.log('props from add news',props);
   const history=useHistory();
 
-  let [imageUrl,setImageUrl]=useState(defaultNewsImage);
-  let [blob, setBlob] = useState(null);
+  let [imageUrl,setImageUrl]=useState(defaultNewsImage);//initially imageUrl set defaultNewsImage
+  let [blob, setBlob] = useState(null);//set blob null for DigitalOcean
 
-  const[selectCategories,setSelectCategories]=useState([]);
+  const[selectCategories,setSelectCategories]=useState([]);//set selectCategories an empty array
 
-  console.log('props');
-  console.log(setSelectCategories);
+  console.log('selectCategories',setSelectCategories);//test
 
+    ///set timeStamp
   const d=new Date();
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const time=d.getDate()+' '+months[d.getMonth()]+', '+d.getFullYear()+' at '+d.getHours()+':'+d.getMinutes();
-
-  let id=Date.now();
+    ///
+  let id=Date.now();//generates miliseconds
 
   const [createNews,setCreateNews]=useState({
     id:id,
@@ -37,16 +38,20 @@ function AddNews(){
     newsLink:''
   });
 
+//rendering data
   useEffect(()=>{
+    //get the category list from firebase
         db.collection("Categories").onSnapshot(snapshot=>{
          setSelectCategories(snapshot.docs.map(doc=>({
            title:doc.data().title
          })))
        })
      },[])
+     //end of category
 
+     ///start of event change
     const EventChange=(event)=>{
-    const {name,value}=event.target;
+    const {name,value}=event.target;//object destructuring name=event.target.name
     setCreateNews((previous)=>{
       return{
         ...previous,
@@ -54,33 +59,40 @@ function AddNews(){
       }
     });
   }
+  ///end of event change
 
-  const HandleImage=(e) => {
-    if (e.target.files && e.target.files[0]) {
-      const reader=new FileReader();
-      reader.onload=()=>{
-        if(reader.readyState===2){
-            setImageUrl(reader.result)
+  //set and preview image
+    const HandleImage=(e) => {
+      if (e.target.files && e.target.files[0]) {
+        const reader=new FileReader();
+        reader.onload=()=>{
+          if(reader.readyState===2){//select image(1) and upload(1)=2
+              setImageUrl(reader.result) //set a value that can be show in browser
+            }
           }
-        }
-    reader.readAsDataURL(e.target.files[0]);
-      setBlob(e.target.files[0]);
-    }
-};
-console.log("blob");
-console.log(createNews);
-  console.log(blob);
+      reader.readAsDataURL(e.target.files[0]);//preview Image
+        setBlob(e.target.files[0]);//set blob object  file name,type,size,.
+      }
+  };
+  //End of set image
 
+  // console.log(createNews);
+  console.log("blob",blob);//test
+
+  ///start upload
   const Upload=(event)=>{
     if((createNews.title!='') && (createNews.news!='') && (imageUrl != defaultNewsImage)){
-      Swal.showLoading();
-      ///
+      Swal.showLoading();//show loading untill the data inserted in firebase
+
       const imageName = id + `.` + blob.name.split(".")[1];
       const params = { Body: blob,
                        Bucket: `${Config.bucketName}`,
                        Key: imageName};
+
        // Sending the file to the Spaces
-       console.log(imageName);
+       // console.log("image name",imageName);
+       // console.log('params',params);
+
        S3.putObject(params)
          .on('build', request => {
            request.httpRequest.headers.Host = `${Config.digitalOceanSpaces}`;
@@ -102,9 +114,9 @@ console.log(createNews);
           else {
           // If there is no error updating the editor with the imageUrl
           imageUrl = `${Config.digitalOceanSpaces}${Config.bucketName}/${imageName}`;
-          console.log(imageUrl, blob.name, blob.type, blob.size);
+          console.log('imageUrl,blob.nam,blob.type,blob.size',imageUrl, blob.name, blob.type, blob.size);
           /// Uploading text details from here.
-
+          //add data in firebase where database collection name is news
                 db.collection("News").doc(createNews.id.toString()).set({
                   id:parseInt(createNews.id),
                   imageUrl:imageUrl,
@@ -121,7 +133,7 @@ console.log(createNews);
                     showConfirmButton: false,
                     timer: 1200
                   }).then((result) => {
-                    history.push('./list');
+                    history.push('./list');//go to list page when successfully added to the database
                   });
                 })
                 .catch(function (error) {
@@ -144,6 +156,8 @@ console.log(createNews);
       })
     }
   }
+  ///end of upload
+
   return(
     <div className="AddNews">
       <div className="AddImage">
@@ -162,10 +176,10 @@ console.log(createNews);
           </div>
           <div className="input-group">
           <select className="form-select Category" name="category" id="inputGroupSelect01"  onChange={EventChange}>
-            <option>Choose Category</option>
+            <option value="">Choose Category</option>
               {
                 selectCategories.map((categories)=>{
-                  console.log(categories.title);
+                  console.log('category title',categories.title);
                 return <option value={categories.title}>{categories.title}</option>
               })
             }
